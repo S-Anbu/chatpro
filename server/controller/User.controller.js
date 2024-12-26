@@ -175,10 +175,10 @@ const getAllUser = async (req, res) => {
 };
 
 const logout =  async (req, res) => {
-  const email = req.user.email
-  const name = req.user.name
-  console.log(email);
-  
+  const email = req.user.email 
+  if (!email) {
+    return res.status(401).json({ message: "Invalid token" });
+  } 
   try {
     const user = await userModel.findOne({ email:email  });
     user.isOnline=false

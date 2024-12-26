@@ -7,15 +7,14 @@ import {useNavigate} from 'react-router-dom'
 const Chatboard = () => {
 const navigate=useNavigate()
   const handleLogout =async()=>{
-    try {
-      console.log(`iam working`);
-      
+    try {      
       const res =await axios.post("http://localhost:5000/auth/user/logout",{}, {withCredentials:true})
       if (res.status===200){
         navigate('/login')
-      }       
+      }
     } catch (error) {
       console.log(error);
+      navigate('/login')
       
     }
   }

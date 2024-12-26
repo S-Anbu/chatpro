@@ -1,47 +1,38 @@
 import { useEffect, useState, useContext } from "react";
 import React from "react";
 import { UserContext } from "../../UserContext";
-import io from "socket.io-client";
 import axios from "axios";
 
-const socket = io("http://localhost:5000", { withCredentials: true });
 
 const ChatInterface = () => {
   const { selectedUser, currentUser } = useContext(UserContext);
+  const [userData, setUserData] = useState({ name: "", isOnline: false });
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  useEffect(() => {
-    if (currentUser?.id) {
-      socket.emit("user-online", { userId: currentUser.id });
-    }
-
-    socket.on("receive-message", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [currentUser]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      if (selectedUser?.id) {
+    if (selectedUser?.name) {
+      const fetchUserData = async () => {
         try {
           const res = await axios.post(
-            "http://localhost:5000/messages",
-            { senderId: currentUser.id, receiverId: selectedUser.id },
+            "http://localhost:5000/auth/user/selectedUser",
+            { Uname: selectedUser.name },
             { withCredentials: true }
           );
-          setMessages(res.data);
+          setUserData({
+            name: res.data.name,
+            isOnline: res.data.isOnline,
+          });
         } catch (err) {
-          console.error("Error fetching messages:", err);
+          setError(err.message);
+          console.error(`Error fetching user data: ${err}`);
         }
-      }
-    };
-    fetchMessages();
+      };
+      fetchUserData();
+    }
   }, [selectedUser]);
+
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
@@ -58,7 +49,7 @@ const ChatInterface = () => {
 
   return (
     <div className="w-full h-[90vh] flex flex-col mx-auto border bg-white rounded-lg shadow-md">
-      {!selectedUser ? (
+      {!selectedUser.name ? (
         <div className="flex items-center justify-center flex-1 bg-gray-50">
           <h1 className="text-lg font-semibold text-gray-700">
             Welcome! Please select a user to start chatting.
@@ -74,7 +65,8 @@ const ChatInterface = () => {
                 className="w-10 h-10 rounded-full"
               />
               <div className="ml-3">
-                <h1 className="text-sm font-semibold">{selectedUser.name}</h1>
+                <h1 className="text-sm font-semibold">{userData.name}</h1>
+                <span>{userData.isOnline ? 'online':'offline'}</span>
               </div>
             </div>
           </div>
