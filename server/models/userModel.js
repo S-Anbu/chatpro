@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   token: String,
   profileImage:String,
   ForgetToken: String,
+  cookieName: String ,
   createdAt: Date,
   updatedAt: Date,
 });
