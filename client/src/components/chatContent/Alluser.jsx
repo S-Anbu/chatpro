@@ -6,13 +6,13 @@ import { UserContext } from "../../UserContext";
 const Alluser = () => {
   const [userData, setUserData] = useState([]);
   const [error, setError] = useState(null);
-  const [clickedIndex, setClickedIndex] = useState(null); // Track the clicked button
   const { setSelectedUser } = useContext(UserContext);
 
-  const handleClick = (user, index) => {
-    setSelectedUser({ name: user.name });
-    setClickedIndex(index); // Update the clicked button index
+  const handleClick = (user) => {
+    setSelectedUser({ name: user.name,id:user.id});
   };
+
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,9 +38,7 @@ const Alluser = () => {
         <button
           key={index}
           onClick={() => handleClick(user, index)}
-          className={`flex items-center space-x-3 rounded shadow-md p-2 w-full ${
-            clickedIndex === index ? "bg-gray-200" : "bg-white"
-          }`}
+          className={`flex items-center space-x-3 rounded hover:bg-gray-100 focus:bg-gray-200 shadow-md p-2 w-full `}
         >
           <div className="rounded-full w-10 h-10 bg-blue-gray-200"></div>
           <span className=" font-semibold">{user.name}</span>

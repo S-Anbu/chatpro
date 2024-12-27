@@ -25,7 +25,7 @@ export function UnderlineTabs() {
             key={label.toLowerCase()}
             value={label.toLowerCase()}
             onClick={() => setActiveTab(label.toLowerCase())}
-            className={activeTab === label.toLowerCase() ? "text-gray-900" : ""}
+            className={`${activeTab === label.toLowerCase() ? "text-gray-900" : ""} font-roboto` }
           >
             {label}
           </Tab>

@@ -1,8 +1,8 @@
-import {React, useEffect ,useState} from "react";
+import {React} from "react";
 import Sidebar from "./SidebarContent";
-import Content from "./Content";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom'
+import ChatInterface from "./ChatInterface";
 
 const Chatboard = () => {
 const navigate=useNavigate()
@@ -20,7 +20,7 @@ const navigate=useNavigate()
   }
   return (
 
-    <div className="bg-blue-100 flex items-center justify-center h-svh">
+    <div className="bg-green-200 flex items-center justify-center h-svh">
       <div className="rounded-md flex w-[95vw]  space-x-2  h-[90vh]   ">
         <div className=" flex-[0.02]  "> 
           <div className="flex  flex-col items-center justify-between  h-full ">
@@ -43,7 +43,7 @@ const navigate=useNavigate()
           <Sidebar />
         </div>
         <div className="flex-[0.7]  bg-white rounded ">
-          <Content  />
+          <ChatInterface/>
         </div>
       </div>
     </div>

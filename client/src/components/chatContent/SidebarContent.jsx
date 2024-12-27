@@ -1,10 +1,18 @@
 import React, { useState,useEffect } from "react";
 import { UnderlineTabs } from "./UnderlineTabs";
 import axios from "axios";
+import {
+  Popover,
+  Button,
+  PopoverHandler,
+  PopoverContent,
+} from "@material-tailwind/react";
 const SidebarContent = () => {
  const [userData, setUserData]=useState({ name: "", isOnline: false })
+ const [open, setOpen] = useState(false);
+
+ const toggleOpen = () => setOpen((cur) => !cur);
   useEffect(() => {
-   
       const fetchUserData = async () => {
         try {
           const res = await axios.get(
@@ -28,7 +36,7 @@ const SidebarContent = () => {
     <div>
       <div className="flex items-center justify-between p-4 ">
         <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-full bg-gray-200"> </div>
+          <img src="https://docs.material-tailwind.com/img/face-2.jpg" className="w-10 h-10 rounded-full"/>
           <div>
             <p className="text- font-semibold text-blue-500">{userData.name ? userData.name : 'Guest'}</p>
             <span className={`text-[12px]  font-medium ${userData.isOnline ? 'text-green-500' : 'text-red-500'} `}> {userData.isOnline ? 'Online':"Offline"} </span>
@@ -46,6 +54,9 @@ const SidebarContent = () => {
               d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m0 14H5.2L4 17.2V4h16zm-4-7v2h-3v3h-2v-3H8V9h3V6h2v3z"
             />
           </svg>
+          <Popover>
+      <PopoverHandler>
+      <Button >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="25"
@@ -56,7 +67,14 @@ const SidebarContent = () => {
               fill="currentColor"
               d="M9.5 13a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0"
             />
-          </svg>
+          </svg>        
+      </Button>
+      </PopoverHandler>
+      <PopoverContent>
+        This is a very beautiful popover, show some love.
+      </PopoverContent>
+    </Popover>
+   
         </div>
       </div>
       <div className="mx-4">

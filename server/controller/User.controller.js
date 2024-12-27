@@ -151,6 +151,7 @@ const getUser =  (req, res) => {
     res.status(200).json({
       name: user.name,
       isOnline: user.isOnline,
+      id:user._id
     });
   } catch (error) {
     console.error("Error fetching user details:", error);
@@ -202,7 +203,7 @@ const selectedUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    return res.status(200).json({ name: user.name, isOnline: user.isOnline });
+    return res.status(200).json({ name: user.name, isOnline: user.isOnline ,id:user._id });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
   }
