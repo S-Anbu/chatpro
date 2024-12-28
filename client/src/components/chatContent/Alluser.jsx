@@ -9,10 +9,8 @@ const Alluser = () => {
   const { setSelectedUser } = useContext(UserContext);
 
   const handleClick = (user) => {
-    setSelectedUser({ name: user.name,id:user.id});
+    setSelectedUser({ name: user.name, id: user.id });
   };
-
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -40,7 +38,14 @@ const Alluser = () => {
           onClick={() => handleClick(user, index)}
           className={`flex items-center space-x-3 rounded hover:bg-gray-100 focus:bg-gray-200 shadow-md p-2 w-full `}
         >
-          <div className="rounded-full w-10 h-10 bg-blue-gray-200"></div>
+          <img
+            src={
+              user.profileImage
+                ? user.profileImage
+                : `https://ui-avatars.com/api/?name=${user.name}&length=1`
+            }
+            className="rounded-full w-10 h-10 border-2"
+          ></img>
           <span className=" font-semibold">{user.name}</span>
         </button>
       ))}

@@ -17,7 +17,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: "10mb" })); // For JSON payloads
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(

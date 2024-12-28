@@ -65,7 +65,8 @@ useEffect(() => {
           setUserData({
             name: res.data.name,
             isOnline: res.data.isOnline,
-            id:res.data.id
+            id:res.data.id,
+            profileImage:res.data.profileImage
           });
         } catch (err) {
           console.error(`Error fetching user data: ${err}`);
@@ -105,9 +106,9 @@ useEffect(() => {
           <div className="flex items-center justify-between p-4 border-b bg-gray-50">
             <div className="flex items-center">
               <img
-                src="https://via.placeholder.com/40"
+                src={userData.profileImage ||  `https://ui-avatars.com/api/?name=${userData.name}&length=1`}
                 alt="Profile"
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full border-2"
               />
               <div className="ml-3">
                 <h1 className="text-sm font-semibold">{userData.name}</h1>

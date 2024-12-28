@@ -3,7 +3,9 @@ const {userModel,messageModel} = require("../models/userModel.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cloudinary = require("cloudinary").v2;
+const dotenv = require('dotenv')
 
+dotenv.config()
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -151,8 +153,40 @@ const getUser =  (req, res) => {
     res.status(200).json({
       name: user.name,
       isOnline: user.isOnline,
-      id:user._id
+      id:user._id,
+      email:user.email,
+      profileImage:user.profileImage
     });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({
+      message: "Failed to fetch user details",
+      error: error.message,
+    });
+  }
+};
+const imageUpdate = async (req, res) => {
+  try {
+    const user = req.user;
+  
+   const { profileImage } = req.body; // Base64 string of the image
+
+    // Upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(profileImage, {
+      folder: "profile_images", // Specify folder in Cloudinary
+    });
+
+    // Get the secure URL
+    const profileImageUrl = result.secure_url;
+
+    // Save URL to your database (pseudo code)
+    const getuser = await userModel.findByIdAndUpdate({_id:user.id} );
+    getuser.profileImage=profileImageUrl
+    await getuser.save()
+    res.status(200).json({ message: "Profile image updated successfully!", profileImageUrl });
+
+
+
   } catch (error) {
     console.error("Error fetching user details:", error);
     res.status(500).json({
@@ -165,7 +199,7 @@ const getUser =  (req, res) => {
 const getAllUser = async (req, res) => {
   const currentUserId=req.user.id
   try {
-    const names = await userModel.find({ _id: { $ne: currentUserId } }, "name");
+    const names = await userModel.find({ _id: { $ne: currentUserId } });
 
     return res.status(200).json({ names });
   } catch (error) {
@@ -203,7 +237,7 @@ const selectedUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    return res.status(200).json({ name: user.name, isOnline: user.isOnline ,id:user._id });
+    return res.status(200).json({ name: user.name, isOnline: user.isOnline ,id:user._id, profileImage:user.profileImage });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
   }
@@ -212,4 +246,5 @@ const selectedUser = async (req, res) => {
 
 
 
-module.exports = { register, verifyOTP, login, dashboard,getAllUser,getUser,logout,selectedUser };
+
+module.exports = { register, verifyOTP, login, dashboard,getAllUser,getUser,logout,selectedUser ,imageUpdate};
