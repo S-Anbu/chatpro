@@ -38,7 +38,9 @@ const SidebarContent = () => {
     <div>
       <div className="flex items-center justify-between p-4 ">
         <div className="flex items-center space-x-2">
+          <button onClick={()=>navigate('/EditProfile')}>
           <img src={userData.profileImage ||"https://docs.material-tailwind.com/img/face-2.jpg"} className="w-10 h-10 rounded-full"/>
+          </button>
           <div>
             <p className="text- font-semibold text-blue-500">{userData.name ? userData.name : 'Guest'}</p>
             <span className={`text-[12px]  font-medium ${userData.isOnline ? 'text-green-500' : 'text-red-500'} `}> {userData.isOnline ? 'Online':"Offline"} </span>

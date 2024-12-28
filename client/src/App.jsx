@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route , Navigate} from "react-router-dom";
 import "./App.css";
 import Register from "./components/Register";
 import LoginPage from "./components/LoginPage";
@@ -14,17 +14,16 @@ function App() {
     const auth = async () => {
       try {
         const res = await axios.get(
-          "http//:localhost:500/auth/user/getUser",
+          "http://localhost:5000/auth/user/getUser",
           {
             withCredentials: true,
           }
-        );
-        console.log("iamworking");
-        
-        if (!res.data.name) {
-          console.log(`unauthorized`);
+        );        
+        if (res.data.name) {
+          setVerified(true);
+        } else {
+          console.log(`Unauthorized`);
         }
-        setVerified(true);
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +41,7 @@ function App() {
           <Route path="/verify-OTP" element={<VerifyOTP />} />
           <Route
             path="/chatboard"
-            element={verified ?<Chatboard />  :<LoginPage /> }
+            element={verified ? <Chatboard />  : <LoginPage /> }
           />
           <Route path="/EditProfile" element={<EditProfile />} />
         </Routes>

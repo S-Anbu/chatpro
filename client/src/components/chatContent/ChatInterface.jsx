@@ -3,6 +3,7 @@ import React from "react";
 import { UserContext } from "../../UserContext";
 import { io } from "socket.io-client";
 import axios from "axios";
+import chat from "../../assets/chat2.svg"
 
 const socket = io("http://localhost:5000"); // Connect to Socket.IO server
 
@@ -96,10 +97,11 @@ useEffect(() => {
   return (
     <div className="w-full h-[90vh] flex flex-col mx-auto border bg-white rounded-lg shadow-md">
       {!selectedUser.name ? (
-        <div className="flex items-center justify-center flex-1 bg-gray-50">
-          <h1 className="text-lg font-semibold text-gray-700">
+        <div className="flex flex-col items-center justify-center space-y-20  flex-1 bg-gray-50">
+          <h1 className="text-lg font-semibold bg-green-50 rounded p-3 text-gray-700">
             Welcome! Please select a user to start chatting.
           </h1>
+          <img src={chat} className="w-96" alt="chat" />
         </div>
       ) : (
         <div className="flex flex-col justify-between h-full">
