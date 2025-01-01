@@ -107,7 +107,7 @@ const login = async (req, res) => {
       { email: user.email, id: user._id },
       process.env.SECRET_KEY
     );
-    user.isOnline=true
+    user.isOnline= true
     user.token = newToken;
     await user.save();
 
@@ -247,4 +247,5 @@ const selectedUser = async (req, res) => {
 
 
 
-module.exports = { register, verifyOTP, login, dashboard,getAllUser,getUser,logout,selectedUser ,imageUpdate};
+
+module.exports = { register, verifyOTP, login, dashboard,getAllUser,getUser,logout,selectedUser ,imageUpdate,};

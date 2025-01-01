@@ -16,14 +16,31 @@ const userSchema = new mongoose.Schema({
 });
 
 const messageSchema = new mongoose.Schema({
-    senderID:String,
-    receiverID:String,
-    timestamp:String,
-    messageContent:String,
+  senderId: { type: String, required: true },
+  receiverId: { type: String, required: true },
+  message: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
 })
 
+const groupSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
+const groupModel = mongoose.model("Group", groupSchema);
 const userModel =  mongoose.model("User", userSchema);
 const messageModel =  mongoose.model('Message',messageSchema)
 
-module.exports = {userModel,messageModel};
+module.exports = {userModel,messageModel,groupModel};
