@@ -112,9 +112,10 @@ const login = async (req, res) => {
     await user.save();
 
     res.cookie("jwt", user.token, {
-  httpOnly: true,
-  maxAge: 60 * 60 * 1000, // 1 hour
-  secure: true,           // Required for HTTPS     // For cross-origin requests
+    httpOnly: true,
+    maxAge: 60 * 60 * 1000, // 1 hour
+    secure: true, 
+    sameSite: "none",
 });
     return res.status(200).json({ message: "Login Successfully" });
   } catch (error) {
