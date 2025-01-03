@@ -14,7 +14,7 @@ const app = express()
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Update with your frontend origin
+    origin: "https://chatpro-client.onrender.com", // Update with your frontend origin
     credentials: true,
   },
 });
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(
     cors({
       httpOnly:true,
-      origin: "http://localhost:5173",
+      origin: "https://chatpro-client.onrender.com",
       credentials: true, 
     })
   );
