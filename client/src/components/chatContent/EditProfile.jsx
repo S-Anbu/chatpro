@@ -11,7 +11,7 @@ const navigate =useNavigate()
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/user/getUser", {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/user/getUser`, {
           withCredentials: true,
         });
         setProfileImage(res.data.profileImage);
@@ -51,7 +51,7 @@ const navigate =useNavigate()
 
       try {
         const response = await axios.post(
-          `http://localhost:5000/auth/user/imageUpdate`,
+          `${import.meta.env.VITE_API_BASE_URL}/auth/user/imageUpdate`,
           { profileImage: base64Image },
           {
             headers: {

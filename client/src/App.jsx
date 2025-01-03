@@ -15,7 +15,10 @@
     useEffect(() => {
       const auth = async () => {
         try {
-          const res = await axios.get("http://localhost:5000/auth/user/getUser", {
+          console.log(import.meta.env.VITE_API_BASE_URL);
+          
+          const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/user/getUser`, {
+          
             withCredentials: true,
           });
           if (res.data.name) {
@@ -38,13 +41,13 @@
     <div>Loading...</div>
   ) : (
     <Routes>
-      <Route path="/" element={verified ? <Navigate to="/chatboard"/> :<LandingPage />} />
+      <Route path="/" element={verified ? <Chatboard /> :<LandingPage />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/Login" element={<LoginPage />} />
       <Route path="/verify-OTP" element={<VerifyOTP />} />
       <Route
         path="/chatboard"
-        element={verified ? <Chatboard />  : <Navigate to="/Login"/> }
+        element={ verified ? <Chatboard /> :<LoginPage /> }
       />
       <Route path="/EditProfile" element={<EditProfile />} />
     </Routes>

@@ -7,6 +7,8 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import AllUser from "../chatContent/Alluser"; // Import your AllUser component
+import Alluser from "../chatContent/Alluser";
+import GroupInterface from '../groupContent/GroupInterface'
 
 export function UnderlineTabs() {
   const [activeTab, setActiveTab] = React.useState("all");
@@ -20,7 +22,7 @@ export function UnderlineTabs() {
             "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
         }}
       >
-        {["All", "Personal", "Group"].map((label) => (
+        {["All", "Personal", "Groups"].map((label) => (
           <Tab
             key={label.toLowerCase()}
             value={label.toLowerCase()}
@@ -36,10 +38,10 @@ export function UnderlineTabs() {
           <AllUser />
         </TabPanel>
         <TabPanel value="personal">
-          <div>Personal Content</div>
+        <Alluser />
         </TabPanel>
-        <TabPanel value="group">
-          <div>Group Content</div>
+        <TabPanel value="groups">
+          <GroupInterface />
         </TabPanel>
       </TabsBody>
     </Tabs>

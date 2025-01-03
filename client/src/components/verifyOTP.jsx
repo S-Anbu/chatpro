@@ -22,7 +22,7 @@ const verifyOTP = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/user/verifyOTP", {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/user/verifyOTP`, {
         otp,
       });
       setMessage(response.data.message); // Show success message

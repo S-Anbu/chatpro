@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const http = require("http");
 const { Server } = require("socket.io");
-const {messageModel} = require('./models/userModel.js')
+const {messageModel,groupModel} = require('./models/userModel.js')
 dotenv.config()
 dbConnect()
 const app = express()
@@ -57,6 +57,60 @@ io.on('connection', (socket) => {
     console.log('A user disconnected:', socket.id);
   });
 });
+
+
+
+///////
+
+
+
+
+// // Group chat functionality
+// io.on("connection", (socket) => {
+//   console.log("A user connected for group chat:", socket.id);
+
+//   // User joins a group
+//   socket.on("joinGroup", (groupName) => {
+//     socket.join(groupName);
+//     console.log(`User with ID ${socket.id} joined group ${groupName}`);
+//   });
+
+//   // Handle group message sending
+//   socket.on("sendGroupMessage", async (data) => {
+//     const { groupName, message, senderId } = data;
+
+//     // Save the group message to the database
+//     const group = await groupModel.findOne({ name: groupName });
+//     if (!group) {
+//       console.error(`Group ${groupName} not found.`);
+//       return;
+//     }
+
+//     const newMessage = new messageModel({
+//       senderId: senderId,
+//       groupId: group._id,
+//       message: message,
+//     });
+//     await newMessage.save();
+
+//     // Broadcast the message to the group
+//     io.to(groupName).emit("receiveGroupMessage", {
+//       senderId,
+//       message,
+//       groupName,
+//     });
+
+//     console.log(`Message sent to group "${groupName}":`, message);
+//   });
+
+//   socket.on("disconnect", () => {
+//     console.log("A user disconnected from group chat:", socket.id);
+//   });
+// });
+
+
+
+
 
 app.use('/auth', authRoutes)
 

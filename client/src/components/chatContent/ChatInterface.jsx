@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { io } from 'socket.io-client';
 import axios from 'axios';
 import { UserContext } from '../../UserContext'; // Adjust based on your project structure
 import chat from '../../assets/chat2.svg';
-import '../../index.css'
+import '../../index.css';
 
-const socket = io('http://localhost:5000', { withCredentials: true });
+const socket = io(`${import.meta.env.VITE_API_BASE_URL}`, { withCredentials: true });
 
 const ChatInterface = () => {
   const { selectedUser } = useContext(UserContext);
@@ -17,12 +17,13 @@ const ChatInterface = () => {
   const [currentUser, setCurrentUser] = useState({ name: '', id: '' });
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef(null);
 
   // Fetch current user data on mount
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/auth/user/getUser', {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/user/getUser`, {
           withCredentials: true,
         });
         setCurrentUser({
@@ -45,7 +46,7 @@ const ChatInterface = () => {
       const fetchUserData = async () => {
         try {
           const res = await axios.post(
-            'http://localhost:5000/auth/user/selectedUser',
+            `${import.meta.env.VITE_API_BASE_URL}/auth/user/selectedUser`,
             { Uname: selectedUser.name },
             { withCredentials: true }
           );
@@ -64,32 +65,31 @@ const ChatInterface = () => {
     }
   }, [selectedUser, currentUser.id]);
 
+  useEffect(() => {
+    if (!selectedUser.name) return;
 
-useEffect(() => {
-  if (!selectedUser.name) return;
-  
-  try {
-    console.log(`iam working`);
-    
     const fetchMessages = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/auth/user/messages/${currentUser.id}/${userData.id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/auth/user/messages/${currentUser.id}/${userData.id}`,
           { withCredentials: true }
         );
         console.log(res.data.messages);
-        
+
         setMessages(res.data.messages);
       } catch (err) {
         console.error('Error fetching messages:', err);
       }
     };
     fetchMessages();
-  } catch (error) {
-    console.error("Error fetching messages:", error);  
-  }
-   
-}, [userData.id])
+  }, [userData.id]);
+
+  // Scroll to the last message when messages update or component mounts
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   // Handle incoming messages
   useEffect(() => {
@@ -115,7 +115,6 @@ useEffect(() => {
 
         socket.emit('chatMessage', messagePayload);
 
-     
         setNewMessage('');
       } catch (err) {
         console.error('Error sending message:', err);
@@ -152,24 +151,22 @@ useEffect(() => {
           </div>
 
           <div className="flex-1 p-4 overflow-y-auto scrollbar-hidden">
-            {messages && messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`mb-2 ${
-                  msg.senderId === currentUser.id ? 'text-right' : 'text-left'
-                }`}
-              >
-                <p
-                  className={`inline-block text-red-900 text-xl px-4 py-2 rounded-lg ${
-                    msg.senderId === currentUser.id
-                      ? 'bg-green-100'
-                      : 'bg-gray-200'
-                  }`}
+            {messages &&
+              messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`mb-2 ${msg.senderId === currentUser.id ? 'text-right' : 'text-left'}`}
                 >
-                  {msg.message}
-                </p>
-              </div>
-            ))}
+                  <p
+                    className={`inline-block  text- px-3 py-1 rounded-lg ${
+                      msg.senderId === currentUser.id ? 'bg-green-100' : 'bg-gray-200'
+                    }`}
+                  >
+                    {msg.message}
+                  </p>
+                </div>
+              ))}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="flex items-center p-4 border-t bg-gray-50">

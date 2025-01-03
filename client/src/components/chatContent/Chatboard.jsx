@@ -8,7 +8,7 @@ const Chatboard = () => {
 const navigate=useNavigate()
   const handleLogout =async()=>{
     try {      
-      const res =await axios.post("http://localhost:5000/auth/user/logout",{}, {withCredentials:true})
+      const res =await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/user/logout`,{}, {withCredentials:true})
       if (res.status===200){
         navigate('/login')
       }
@@ -20,7 +20,7 @@ const navigate=useNavigate()
   }
   return (
 
-    <div className="bg-green-200 flex items-center justify-center h-svh">
+    <div className="bg-blue-100 flex items-center justify-center h-svh">
       <div className="rounded-md flex w-[95vw]  space-x-2  h-[90vh]   ">
         <div className=" flex-[0.02]  "> 
           <div className="flex  flex-col items-center justify-between  h-full ">
