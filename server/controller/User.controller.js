@@ -220,7 +220,10 @@ const logout =  async (req, res) => {
     const user = await userModel.findOne({ email:email  });
     user.isOnline=false
     await user.save();
-    res.clearCookie("jwt", { httpOnly: true });
+    res.clearCookie("jwt", { httpOnly: true,
+      secure: true, 
+      sameSite: "None",
+     });
     return res.status(200).json({ message: "Logged out successfully" });
   
   } catch (error) {

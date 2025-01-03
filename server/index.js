@@ -15,6 +15,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://chatpro-client.onrender.com", // Update with your frontend origin
+    // origin: "http://http://localhost:5173", // Update with your frontend origin
     methods: ["GET", "POST"],
     credentials: true,
   },
