@@ -115,7 +115,7 @@ const navigate =useNavigate()
 
           <button
             onClick={handleSave}
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            className="w-full bg-black text-white py-2 rounded-full hover:bg-gray-800 transition"
           >
             Save Changes
           </button>
